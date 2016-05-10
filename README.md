@@ -22,4 +22,4 @@ This container exports ports `21` and `22`.
 
 ## Usage
 
-`docker run -d -p [HOST PORT NUMBER]:21 [HOST PORT NUMBER]:22`
+`docker run -d -p [HOST PORT NUMBER]:21 -p [HOST PORT NUMBER]:22 --name <name> jachinte/frascati-1.4`
