@@ -2,11 +2,11 @@
 
 cat << EOB
 
-  *************************************************
-  *                                               *
-  *    Docker image: jachinte/frascati-1.4        *
-  *                                               *
-  *************************************************
+  *****************************************
+  *                                       *
+  *  Docker image: jachinte/frascati-1.4  *
+  *                                       *
+  *****************************************
 
   CONTAINER SETTINGS
   ------------------
@@ -17,5 +17,6 @@ cat << EOB
 
 EOB
 
-# Start SSH & FTP
-service ssh start && service vsftpd start
+# Start services
+service vsftpd start
+service ssh start
