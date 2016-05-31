@@ -18,5 +18,5 @@ cat << EOB
 EOB
 
 # Start services
-service vsftpd start
+# service vsftpd start
 service ssh start
