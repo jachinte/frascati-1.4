@@ -4,11 +4,11 @@
 # To use execute: sudo -E ./install.sh
 
 function show {
-        echo ""
+	echo ""
 	echo "-----------------------------------"
 	echo " $1"
 	echo "-----------------------------------"
-        echo ""
+	echo ""
 }
 
 show "ADDING REPOSITORIES"
@@ -21,6 +21,10 @@ apt-get -y update && apt-get install -y wget unzip vsftpd openssh-server rabbitm
 show "ADDING USER frascati:frascati"
 useradd -m -s /bin/bash frascati && echo "frascati:frascati" | chpasswd
 adduser frascati sudo
+
+show "OPEN SSH & FTP PORTS"
+ufw allow ssh
+ufw allow ftp
 
 show "DOWNLOADING FRASCATI"
 mkdir /tmp/files
