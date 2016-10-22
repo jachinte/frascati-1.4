@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 # install.sh
 # Miguel Jimenez
 # To use execute: sudo -E ./install.sh
