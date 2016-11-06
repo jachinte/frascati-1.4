@@ -48,10 +48,13 @@ mkdir /opt/jdk
 mv jdk1.6.0_23 /opt/jdk
 sudo chown -R frascati jdk
 
-show "UPDATING FRASCATI BINARIES"
+show "UPDATING FRASCATI BINARY AND LIBS"
 wget https://raw.githubusercontent.com/jachinte/frascati-binaries/master/frascati
 mv frascati /opt/frascati-runtime-1.4/bin/
 chmod a+x /opt/frascati-runtime-1.4/bin/frascati
+wget http://central.maven.org/maven2/com/google/guava/guava/18.0/guava-18.0.jar
+rm $FRASCATI_HOME/lib/guava-r07.jar
+mv guava-18.0.jar $FRASCATI_HOME/lib/guava-18.0.jar
 
 p=0
 if [ -z "$JAVA_HOME" ]; then
