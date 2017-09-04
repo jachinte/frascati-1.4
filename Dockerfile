@@ -1,62 +1,34 @@
-# FraSCAti 1.4 on Ubuntu 16.04 LTS
+# FraSCAti 1.4
 #
-# VERSION 0.0.4
+# VERSION 0.1.0
 
-FROM ubuntu:16.04
+FROM jachinte/oracle-jdk-1.6.0_23:0.1.0
 
 MAINTAINER Miguel Jiménez <migueljimenezachinte@gmail.com>
-LABEL Description="This image provides a fresh FraSCAti installation using an \
-enhanced version of the binaries. You can read more about \
-this at https://github.com/jachinte/frascati-binaries" \
+LABEL Description="This image provides FraSCAti 1.4 running with Oracle JDK 1.6.0_23. \
+It uses an enhanced version of the FraSCAti binaries. You can read more about \
+that at https://github.com/jachinte/frascati-binaries" \
       License="MIT" \
-      Usage="docker run -d -p [HOST PORT NUMBER]:21 [HOST PORT NUMBER]:22" \
-      Version="0.0.4"
+      Usage="docker run --rm -ti jachinte/frascati-1.4 frascati --version" \
+      Version="0.1.0"
 
-# Install programs
+# Install dependencies.
 RUN apt-get -y update && apt-get install -y \
-    wget \
     unzip \
-    vsftpd \
-    openssh-server \
-    sudo
+    wget
 
-# Copy files
-COPY run.sh /usr/local/bin/
-COPY vsftpd.conf /etc/vsftpd.conf
-RUN chmod a+x /usr/local/bin/run.sh
+# Install and configure FraSCAti.
+ADD frascati-1.4-bin.zip /tmp
+RUN unzip /tmp/frascati-1.4-bin.zip -d /opt/
 
-# Add user frascati (password: frascati)
-RUN useradd -m -s /bin/bash frascati && echo "frascati:frascati" | chpasswd
-RUN adduser frascati sudo
-
-# SSH login fix. Otherwise user is kicked off after login (From: https://docs.docker.com/engine/examples/running_ssh_service/)
-RUN sed 's@session\s*required\s*pam_loginuid.so@session optional pam_loginuid.so@g' -i /etc/pam.d/sshd
-
-# Download and install Oracle JDK 1.6.0_23
-RUN mkdir /tmp/files && cd /tmp/files
-RUN wget --header "Cookie: oraclelicense=accept-securebackup-cookie" http://download.oracle.com/otn-pub/java/jdk/6u23-b05/jdk-6u23-linux-x64.bin
-RUN chmod a+x jdk-6u23-linux-x64.bin
-RUN ./jdk-6u23-linux-x64.bin
-RUN mkdir /opt/jdk && mv jdk1.6.0_23 /opt/jdk
-
-# Download and install FraSCAti
-RUN wget http://download.forge.ow2.org/frascati/frascati-1.4-bin.zip
-RUN unzip frascati-1.4-bin.zip -d /opt/
-
-# Update the FraSCAti binary
+# Update the FraSCAti binary.
 RUN wget https://raw.githubusercontent.com/jachinte/frascati-binaries/master/frascati
 RUN mv frascati /opt/frascati-runtime-1.4/bin/
 RUN chmod a+x /opt/frascati-runtime-1.4/bin/frascati
 
-# Environment variables
-ENV JAVA_HOME /opt/jdk/jdk1.6.0_23
+# Set environment variables.
 ENV FRASCATI_HOME /opt/frascati-runtime-1.4
-ENV PATH $PATH:$JAVA_HOME/bin:$FRASCATI_HOME/bin
+ENV PATH $PATH:$FRASCATI_HOME/bin
 
-# Remove temporal directories
-RUN rm -rf /tmp/files
-
-# Expose FTP & SSH ports
-EXPOSE 21 22
-
-CMD ["/usr/local/bin/run.sh"]
+# Clean up APT when done.
+RUN apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*

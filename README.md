@@ -2,13 +2,7 @@
 
 ![Docker](http://s32.postimg.org/cs6e5svtd/docker.png)&nbsp;&nbsp;&nbsp;&nbsp;![FraSCAti](http://s32.postimg.org/dz1yf1sep/frascati.jpg)
 
-This docker container installs FraSCAti 1.4, with the following features:
-
-- Ubuntu 16.04 base image
-- openssh-server (latest)
-- vsftpd (latest)
-- Oracle Java 1.6.0_23
-- [FraSCAti 1.4](http://forge.ow2.org/project/showfiles.php?group_id=329) with [enhanced binaries](https://github.com/jachinte/frascati-binaries)
+This docker container installs [FraSCAti 1.4](http://forge.ow2.org/project/showfiles.php?group_id=329) configured with the [enhanced binaries](https://github.com/jachinte/frascati-binaries) and running with Oracle JDK 1.6.0_23.
 
 ## Installation from [Docker registry hub](https://hub.docker.com/r/jachinte/frascati-1.4/).
 
@@ -16,10 +10,16 @@ This docker container installs FraSCAti 1.4, with the following features:
 docker pull jachinte/frascati-1.4
 ```
 
-## Exposed ports
-
-This container exports ports `21` and `22`.
-
 ## Usage
 
-`docker run -d -p [HOST PORT NUMBER]:21 -p [HOST PORT NUMBER]:22 --name <name> jachinte/frascati-1.4`
+```
+docker run --rm -ti jachinte/frascati-1.4 frascati --version
+```
+
+# Build the image from source
+
+```bash
+git clone https://github.com/jachinte/frascati-1.4 & cd frascati-1.4
+docker build -t jachinte/frascati-1.4:tag .
+# docker push jachinte/frascati-1.4:tag
+```
